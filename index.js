@@ -9,32 +9,94 @@ app.get("/", (req, res) => {
   res.send("Hello worldddddd");
 });
 app.use(json());
-const users = [];
+let products = [];
+let category = [
+  {
+    name: "",
+    id: "2890",
+  },
+  {
+    name: "",
+    id: "2894",
+  },
+  {
+    name: "",
+    id: "2436",
+  },
+  {
+    name: "",
+    id: "2049",
+  },
+];
 
-app.post("/user/create", (req, res) => {
-  const { username, gender, age, email, id } = req.body;
+app.post("/product", (req, res) => {
+  const { name, price, brand, category, id } = req.body;
   users.push({
-    username,
-    gender,
-    age,
-    email,
+    name,
+    price,
+    brand,
+    category,
     id: uuidv4(),
   });
   res.send({
     success: true,
-    message: "done",
+    message: "product added",
   });
 });
 
-app.get("/users", (_, res) => {
+app.get("/products", (_, res) => {
   res.send(users);
 });
 
-app.get("/user", (req, res) => {
-  // const search = "test@gmail.com";
+app.get("/product", (req, res) => {
   const { id } = req.body;
-  const filter = users.find((user) => user.id === id);
+  const filter = products.find((product) => product.id === id);
   res.send(filter);
+});
+
+app.get("/product/category", (req, res) => {
+  const { id } = req.body;
+  const filter = products.find((product) => product.category.includes(id));
+  res.send(filter);
+});
+
+app.delete("/product", (req, res) => {
+  const { id } = req.body;
+  products = products.filter((product) => product.id !== id);
+
+  res.send({
+    success: true,
+    message: "deleted product",
+  });
+});
+
+app.put("/product", (req, res) => {
+  const { id, newName, age } = req.body;
+  let productFound = false;
+
+  products.map((product) => {
+    if (product.id === id) {
+      if (newName) {
+        product.username = newName;
+      }
+      if (age) {
+        product.age = age;
+      }
+      productFound = true;
+    }
+  });
+
+  if (productFound) {
+    res.send({
+      success: true,
+      message: "updated product",
+    });
+  } else {
+    res.send({
+      success: true,
+      message: "product not found",
+    });
+  }
 });
 
 app.listen(port, () => {
