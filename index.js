@@ -1,19 +1,31 @@
-import http from "http";
-
-// console.log(http, "http");
+import express, { json } from "express";
 
 const port = 8080;
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader("Content-type", "text/json");
-  const movie = {
-    name: "wicked",
-    genre_ids: [12, 31],
-    id: 123,
-  };
-  res.end(JSON.stringify(movie));
+
+const app = express();
+
+app.get("/", (req, res) => {
+  console.log(req);
+  res.send("Hello worldddddd");
+});
+app.use(json());
+const users = [];
+
+app.post("/user/create", (req, res) => {
+  const { username, gender, age, email } = req.body;
+  users.push({
+    username,
+    gender,
+    age,
+    email,
+  });
+  console.log(users, "users");
+  res.send({
+    success: true,
+    message: "done",
+  });
 });
 
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server working at http://localhost:${port}`);
 });
