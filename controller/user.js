@@ -4,6 +4,17 @@ export let users = [];
 
 export const createUser = (req, res) => {
   const { username, gender, age, email, id } = req.body;
+
+  const user = users.find((user) => user.email === email);
+
+  if (user) {
+    return res
+      .send({
+        success: false,
+        message: "email already taken",
+      })
+      .end();
+  }
   users.push({
     username,
     gender,
@@ -60,7 +71,7 @@ export const updateUser = (req, res) => {
     });
   } else {
     res.send({
-      success: true,
+      success: false,
       message: "user not found",
     });
   }

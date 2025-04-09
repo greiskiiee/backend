@@ -7,8 +7,8 @@ const app = express();
 
 app.use(json());
 
-app.use(userRouter);
-app.use(orderRouter);
+app.use("/user", userRouter);
+app.use("/order", orderRouter);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

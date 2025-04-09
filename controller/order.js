@@ -21,16 +21,17 @@ export const createOrder = (req, res) => {
         updatedAt,
         status: statuss[0],
       });
-      res.send({
-        success: true,
-        message: "order placed",
-      });
-    } else {
-      res.send({
-        success: true,
-        message: "did not find user",
-      });
+      return res
+        .send({
+          success: true,
+          message: "order placed",
+        })
+        .end();
     }
+    res.send({
+      success: true,
+      message: "did not find user",
+    });
   });
 };
 
